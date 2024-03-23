@@ -1,0 +1,39 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v2.11"
+    container_name: "traefik"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+
+      # Only enable tls if we have a certificate in place!
+      # - "traefik.http.routers.dashboard.tls"
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "testing-whoami"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`testing.${DOMAIN}`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+
+networks:
+  default:
+    name: ${DOCKER_PROXY_NETWORK}
+    external: true
