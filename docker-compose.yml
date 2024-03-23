@@ -40,6 +40,28 @@ services:
       - 'traefik.http.middlewares.domain.redirectregex.replacement=[9](${SUBDOMAIN_FOR_WHOAMI}.${DOMAIN}/)$${1}'
       - "traefik.http.middlewares.domain.redirectregex.permanent=true"
 
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: cadvisor
+    ports:
+      - 8081:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - dockerproxy
+    environment:
+      - DOCKER_HOST=tcp://dockerproxy:2375
+
+  dockerproxy:
+    image: tecnativa/docker-socket-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - CONTAINERS=1
+
 networks:
   default:
     name: ${DOCKER_PROXY_NETWORK}
