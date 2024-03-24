@@ -57,6 +57,7 @@ services:
 
   dockerproxy:
     image: tecnativa/docker-socket-proxy
+    container_name: dockerproxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
