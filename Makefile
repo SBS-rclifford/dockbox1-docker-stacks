@@ -14,7 +14,7 @@ up: # Start the container stacks
 
 down: # Stop and remove the containers
 	docker compose -p traefik_stack -f docker-compose.yml down
-	docker compose -p web_docs_stack -f web/docker-compose.yml down
+	docker compose -p web_docs_stack --env-file .env -f web/docker-compose.yml down
 
 clean: down # Remove containers and unused volumens
 	@echo Containers are removed.
