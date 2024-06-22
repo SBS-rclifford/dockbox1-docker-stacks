@@ -8,9 +8,7 @@ services:
       - 8910:80
   
     networks:
-      traefik-proxy-net:
-        aliases:
-          - web-app-instance2
+      - default
 
     labels:
       - "traefik.enable=true"
@@ -24,7 +22,3 @@ services:
       # - 'traefik.http.middlewares.domain.redirectregex.replacement=[9](${SUBDOMAIN_FOR_DOCS_SERVER}.${DOMAIN}/)$${1}'
       # - "traefik.http.middlewares.domain.redirectregex.permanent=true"
 
-networks:
-  traefik-proxy-net:
-    name: ${DOCKER_PROXY_NETWORK}
-    external: true
