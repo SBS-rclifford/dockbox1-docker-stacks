@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  docs:
+    image: nginx:latest
+    container_name: sphinx-docs
+    ports:
+      - 8910:80
+  
+    networks:
+      traefik-proxy-net:
+        aliases:
+          - web-app-instance2
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.docs_site.rule=Host(`${SUBDOMAIN_FOR_DOCS_SERVER}.${DOMAIN}`)"
+      - "traefik.http.routers.docs_site.entrypoints=web"
+
+      # Uncomment this section to have the main DOMAIN redirect to this container's subdomain
+      # - "traefik.http.routers.domain.rule=Host(`${DOMAIN}`)"
+      # - "traefik.http.routers.domain.middlewares=domain"
+      # - 'traefik.http.middlewares.domain.redirectregex.regex=^[8](${DOMAIN}/)(.*)'
+      # - 'traefik.http.middlewares.domain.redirectregex.replacement=[9](${SUBDOMAIN_FOR_DOCS_SERVER}.${DOMAIN}/)$${1}'
+      # - "traefik.http.middlewares.domain.redirectregex.permanent=true"
+
+networks:
+  traefik-proxy-net:
+    name: ${DOCKER_PROXY_NETWORK}
+    external: true
