@@ -28,6 +28,8 @@ services:
   whoami:
     image: "traefik/whoami"
     container_name: "testing-whoami"
+    ports:
+      - 9999:80
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`${SUBDOMAIN_FOR_WHOAMI}.${DOMAIN}`)"
