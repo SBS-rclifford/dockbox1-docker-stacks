@@ -36,12 +36,12 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`${SUBDOMAIN_FOR_WHOAMI}.${DOMAIN}`)"
       - "traefik.http.routers.whoami.entrypoints=web"
 
-      # Redirect the main DOMAIN to this container's subdomain
-      - "traefik.http.routers.domain.rule=Host(`${DOMAIN}`)"
-      - "traefik.http.routers.domain.middlewares=domain"
-      - 'traefik.http.middlewares.domain.redirectregex.regex=^[8](${DOMAIN}/)(.*)'
-      - 'traefik.http.middlewares.domain.redirectregex.replacement=[9](${SUBDOMAIN_FOR_WHOAMI}.${DOMAIN}/)$${1}'
-      - "traefik.http.middlewares.domain.redirectregex.permanent=true"
+      # Uncomment this section to have the main DOMAIN redirect to this container's subdomain
+      # - "traefik.http.routers.domain.rule=Host(`${DOMAIN}`)"
+      # - "traefik.http.routers.domain.middlewares=domain"
+      # - 'traefik.http.middlewares.domain.redirectregex.regex=^[8](${DOMAIN}/)(.*)'
+      # - 'traefik.http.middlewares.domain.redirectregex.replacement=[9](${SUBDOMAIN_FOR_WHOAMI}.${DOMAIN}/)$${1}'
+      # - "traefik.http.middlewares.domain.redirectregex.permanent=true"
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1
