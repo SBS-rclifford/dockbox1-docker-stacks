@@ -83,8 +83,29 @@ services:
       - "traefik.http.routers.uptime-kuma.rule=Host(`${SUBDOMAIN_FOR_UPTIMEKUMA}.${DOMAIN}`)"
       - "traefik.http.routers.uptime-kuma.entrypoints=web"
 
+  portainer-ce:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - 8000:8000
+      - 9443:9443
+    restart: always
+    depends_on:
+      - dockerproxy
+    environment:
+      - DOCKER_HOST=tcp://dockerproxy:2375
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer-ce.rule=Host(`${SUBDOMAIN_FOR_PORTAINER}.${DOMAIN}`)"
+      - "traefik.http.routers.portainer-ce.entrypoints=web"
+
+
 volumes:
   uptime-kuma:
+  portainer_data:
 
 networks:
   default:
