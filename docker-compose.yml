@@ -78,6 +78,11 @@ services:
     environment:
       - DOCKER_HOST=tcp://dockerproxy:2375
 
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uptime-kuma.rule=Host(`${SUBDOMAIN_FOR_UPTIMEKUMA}.${DOMAIN}`)"
+      - "traefik.http.routers.uptime-kuma.entrypoints=web"
+
 volumes:
   uptime-kuma:
 
