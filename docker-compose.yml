@@ -27,7 +27,8 @@ services:
 
   whoami:
     image: "traefik/whoami"
-    container_name: "testing-whoami"
+    container_name: "whoami"
+    hostname: "whoami-dockbox2"
     ports:
       - 9999:80
     labels:
