@@ -1,5 +1,5 @@
 version: "3.8"
-
+name: "web_docs_stack"
 services:
   docs:
     image: nginx:latest
