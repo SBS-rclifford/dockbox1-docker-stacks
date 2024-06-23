@@ -5,4 +5,5 @@ repos:
     hooks:
       - id: commitizen
         # args: ["--"]
-        stages: [pre-push]
+        # stages: [pre-push]
+        stages: [pre-commit]
